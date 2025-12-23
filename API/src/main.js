@@ -1,19 +1,16 @@
 import "./style.css";
 
-const apiCall = "https://www.freetogame.com/api/games";
+const URL = "https://dogapi.dog/api/v1/facts";
 
-async function getGames(apiCall) {
+async function fetchData(URL) {
   try {
-    const response = await fetch(apiCall);
-    if (!response.ok) {
-      throw new Error(response.status);
-    } else {
-      const data = await response.json();
-      console.log(data);
-    }
+    const response = await fetch(URL);
+    const data = await response.json();
+    console.log(data.facts);
+    document.querySelector("#apiData").textContent = data.facts;
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 }
 
-getGames(apiCall);
+fetchData(URL);
