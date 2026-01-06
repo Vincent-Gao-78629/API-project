@@ -1,6 +1,6 @@
 import "./style.css";
 
-const URL = "https://dogapi.dog/api/v1/facts";
+const URL = "https://www.freetogame.com/api/games";
 
 async function fetchData(URL) {
   try {
@@ -9,8 +9,7 @@ async function fetchData(URL) {
       throw new Error(response);
     } else {
       const data = await response.json();
-      console.log(data.facts);
-      document.querySelector("#apiData").textContent = data.facts;
+      document.querySelector("#apiData").textContent = data;
     }
   } catch (error) {
     console.log(error);
