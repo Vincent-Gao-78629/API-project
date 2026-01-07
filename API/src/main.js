@@ -1,20 +1,19 @@
 import "./style.css";
 
-const URL = "https://images.metmuseum.org/CRDImages/ad/original/ADA2984.jp";
-let AllData = "fruit/all";
-
-async function fetchData(URLPath) {
+const URL =
+  "https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=";
+let SearchQuery = "a"; //let them enter a query
+async function fetchData(URL, SearchQuery) {
   try {
-    const response = await fetch(`${URL}${URLPath}`);
+    const response = await fetch(`${URL}${SearchQuery}`);
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
-    document.getElementById("apiData").textContent = data.name;
+    document.getElementById("apiData").textContent = data.objectIDs; //after getting object ids put the id->primary image on screen
   } catch (error) {
     console.error(error.message);
   }
 }
 
-fetchData(AllData);
+fetchData(URL, SearchQuery);
