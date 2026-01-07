@@ -1,24 +1,20 @@
 import "./style.css";
 
-const URL = "https://api.pokemontcg.io/v2/cards";
-const API_KEY = "af71b87a-fc23-45fd-90ee-e55622ff1404";
+const URL = "https://images.metmuseum.org/CRDImages/ad/original/ADA2984.jp";
+let AllData = "fruit/all";
 
-async function fetchData() {
+async function fetchData(URLPath) {
   try {
-    const response = await fetch(URL, {
-      headers: {
-        "X-Api-Key": API_KEY,
-      },
-    });
-
+    const response = await fetch(`${URL}${URLPath}`);
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
     }
     const data = await response.json();
-    document.querySelector("#apiData").textContent = data.card[0].name;
+    console.log(data);
+    document.getElementById("apiData").textContent = data.name;
   } catch (error) {
     console.error(error.message);
   }
 }
 
-fetchData();
+fetchData(AllData);
