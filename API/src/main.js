@@ -1,49 +1,44 @@
 import "./style.css";
 
-const URLSearch =
+const SEARCH_URL =
   "https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=";
 
-let SearchURL = "flowers";
-
-async function fetchIDWithImages(URL, SearchURL) {
-  try {
-    const response = await fetch(`${URL}${SearchURL}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status}`);
-    }
-    const data = await response.json();
-    document.getElementById("apiData").textContent = data.objectIDs; //after getting object ids put the id->primary image on screen
-  } catch (error) {
-    console.error(error.message);
-  }
-}
-
-fetchIDWithImages(URL, SearchURL);
-
-const ObjectIDSearch =
+const OBJECT_URL =
   "https://collectionapi.metmuseum.org/public/collection/v1/objects/";
-async function fetchData(URL, SearchURL) {
+
+const query = "flowers";
+
+async function fetchArtwork(query) {
   try {
-    const response = await fetch(`${URL}${SearchURL}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status}`);
+    const searchResponse = await fetch(`${SEARCH_URL}${query}`);
+    if (!searchResponse.ok) {
+      throw new Error(`Search error: ${searchResponse.status}`);
     }
-    const data = await response.json();
-    document.getElementById("apiData").textContent = data.objectIDs; //after getting object ids put the id->primary image on screen
+
+    const searchData = await searchResponse.json();
+    const objectIDs = searchData.objectIDs.slice(0, 11);
+
+    const imgCard = document.getElementById("images");
+    imgCard.innerHTML = "";
+
+    for (let objectID of objectIDs) {
+      const objectResponse = await fetch(`${OBJECT_URL}${objectID}`);
+      if (!objectResponse.ok) {
+        throw new Error(`Object error: ${objectResponse.status}`);
+      }
+
+      const objectData = await objectResponse.json();
+
+      if (objectData.primaryImage) {
+        imgCard.insertAdjacentHTML(
+          "beforeend",
+          `<img src="${objectData.primaryImage}" alt="${objectData.title}"/>`
+        );
+      }
+    }
   } catch (error) {
     console.error(error.message);
   }
 }
 
-async function fetchData(URL, SearchURL) {
-  try {
-    const response = await fetch(`${URL}${SearchURL}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status}`);
-    }
-    const data = await response.json();
-    document.getElementById("apiData").textContent = data.objectIDs; //after getting object ids put the id->primary image on screen
-  } catch (error) {
-    console.error(error.message);
-  }
-}
+fetchArtwork(query);
