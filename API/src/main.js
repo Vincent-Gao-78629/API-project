@@ -1,18 +1,10 @@
-import "./style.css";
-import { defineConfig } from "vite";
-import tailwindcss from "@tailwindcss/vite";
-
-export default defineConfig({
-  plugins: [tailwindcss()],
-});
-
 const SEARCH_URL =
   "https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=";
 
 const OBJECT_URL =
   "https://collectionapi.metmuseum.org/public/collection/v1/objects/";
 
-const query = "flowers";
+const query = "flower";
 
 async function fetchArtwork(query) {
   try {
@@ -22,7 +14,7 @@ async function fetchArtwork(query) {
     }
 
     const searchData = await searchResponse.json();
-    const objectIDs = searchData.objectIDs.slice(0, 11);
+    const objectIDs = searchData.objectIDs;
 
     const imgCard = document.getElementById("images");
     imgCard.innerHTML = "";
