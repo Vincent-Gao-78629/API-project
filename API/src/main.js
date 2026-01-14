@@ -72,3 +72,5 @@ document.getElementById("searchButton").addEventListener("click", () => {
   const query = document.getElementById("searchInput").value.trim();
   if (query) fetchArtwork(query);
 });
+
+//a
